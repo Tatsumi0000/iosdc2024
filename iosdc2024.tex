@@ -1,6 +1,6 @@
 \documentclass[uplatex,a4j,12pt,twocolumn]{jsarticle}
 
-\renewcommand{\baselinestretch}{1.0}
+\renewcommand{\baselinestretch}{0.99}
 % 縦横のサイズ調整
 \usepackage[margin=10mm]{geometry}
 \usepackage[dvipdfmx]{graphicx,hyperref}
@@ -46,13 +46,14 @@ Raelizeを開発するために、Appleが公式で提供しているInputMethod
       Xcode & 15.4 \\
       Swift & 5.10 \\
       The Composable Architecture & 1.9.2 \\
+      Ruby & 3.3.0\\
       fastlane & 2.220.0 \\ \hline
     \end{tabular}
   \end{center}
 \end{table}\label{table:version}
 
 本稿の構成は以下の通りです。
-第\ref{sec:abount_inputmethodkit}章ではInputMethodKitについて述べます。第\ref{sec:the_composable_architecture}章ではThe Composable Architecture（TCA）について述べます。第\ref{sec:use_imk_and_tca}章ではInputMethodKitとTCAを使ったIME開発について述べます。第\ref{sec:multi_module_and_fastlane}章ではマルチモジュール構成とfastlaneを用いた効率的なデバッグについて述べます。第\ref{sec:conclusion}章では本稿のまとめと今後の課題を示します。
+第\ref{sec:abount_inputmethodkit}章ではInputMethodKitについて述べます。第\ref{sec:the_composable_architecture}章ではThe Composable Architecture（TCA）について述べます。第\ref{sec:use_imk_and_tca}章ではInputMethodKitとTCAを使ったIME開発について述べます。第\ref{sec:multi_module_and_fastlane}章ではマルチモジュール構成とfastlaneを用いた効率的なデバッグについて述べます。第\ref{sec:conclusion}章では本稿のまとめ述べます。
 
 解説に使用するコードは、\url{https://github.com/Tatsumi0000/Raelize/tree/main}で公開しています。
 
@@ -72,7 +73,7 @@ InputMethodKitは、主に以下の3つのクラスを使って開発します�
     \end{itemize}
     \item IMKInputController
     \begin{itemize}
-        \item 入力メソッドのテキスト入力を制御するクラス\cite{bib:imk_input_controller}
+        \item 入力メソッドのテキスト入力を制御するクラス\cite{bib:imk_input_controller}。このクラスをオーバライドしてIMEのロジックを実装する
     \end{itemize}
 \end{itemize}
 
@@ -81,7 +82,13 @@ InputMethodKitは、主に以下の3つのクラスを使って開発します�
 The Composable Architecture（TCA）について述べます。TCAは、Point-Freeが開発しているライブラリで一貫性のあるコードを書くことができます。TCAは、UIKitやSwiftUIを使っていないアプリケーションに対しても適用が可能で、今回はIMKInputControllerにコードが集中するという課題を解決するために使用しました。
 
 \section{InputMethodKitとTCAを使ったIME開発}\label{sec:use_imk_and_tca}
-InputMethodKitとTCAを使ったIME開発について述べます。IMKInputControllerのイニシャライザでTCAのStateを監視し、状態に応じてIMKCandidatesを操作しました。コード\ref{listings:state}に、RealizeでのState、コード\ref{listings:initial_state}にIMKInputControllerのイニシャライザでStateを監視するコード例を示します。
+InputMethodKitとTCAを使ったIME開発について述べます。以下のような実装をすることで、コードの見通しをよくしました。
+ 
+\begin{itemize}
+  \item IMKInputControllerのイニシャライザでTCAのStateを監視し、状態に応じてIMKCandidatesを操作
+  \item IMKInputControllerの各メソッド内で、TCA側のActionを呼び出す
+\end{itemize}
+コード\ref{listings:state}に、RealizeでのState、コード\ref{listings:initial_state}にIMKInputControllerのイニシャライザでStateを監視するコード例を示します。
 
 \begin{listing}[h]
   \begin{minted}[breaklines]{swift}
@@ -106,7 +113,7 @@ public struct State: Equatable {
   \caption{RealizeでのState例}\label{listings:state}
 \end{listing}
 
-\begin{listing}[H]
+\begin{listing}[h]
   \begin{minted}[breaklines]{swift}
 initialState: RaelizeIMKReducer.State(raelizeState: .inputMode),
   reducer: { RaelizeIMKReducer() })
@@ -223,7 +230,7 @@ end
 IME開発中にprintデバッグをしたい場合はprintを使うのではなく、NSLogを使うことで、ログをConsoleアプリ\cite{bib:console}に出力します。そのまま使うとIME以外のログも大量に出力されて、分かりにくいため、Consoleアプリの右上からフィルタリング（アプリ名などで）を行い、IMEのログだけを出力することをおすすめします。
 
 \section{おわりに}\label{sec:conclusion}
-本稿では、InputMethodKitとTCAを使ったIME開発や、マルチモジュール構成とfastlaneを用いた効率的なデバッグについて述べました。InputMethodKitとTCAを一緒に使い開発することでコードの見通しをよくしつつ開発することが出来ました。他にもマルチモジュール構成とfastlaneを用いることで、効率的なデバッグを行うことができました。
+本稿では、InputMethodKitとTCAを使ったIME開発と、マルチモジュール構成、fastlaneを用いた効率的なデバッグについて述べました。InputMethodKitとTCAを一緒に使い開発することでコードの見通しをよくしつつ開発することが出来ました。他にもマルチモジュール構成とfastlaneを用いることで、効率的なデバッグを行うことができました。
 
 %参考文献
 \bibliography{iosdc2024} 

@@ -9,3 +9,4 @@ services:
       - ./.latexmkrc:/root/.latexmkrc
     environment:
       SHELL: "/bin/bash"
+
