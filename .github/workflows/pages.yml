@@ -45,11 +45,12 @@ jobs:
         run: |
           cd iosdc2024-slides
           ./gradlew wasmJsBrowserDistribution
+          ls -a
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v2
         with:
-          path: build/dist/wasmJs/productionExecutable
+          path: iosdc2024-slides/build/dist/wasmJs/productionExecutable
 
       - name: Deploy to GitHub Pages
         id: deployment
