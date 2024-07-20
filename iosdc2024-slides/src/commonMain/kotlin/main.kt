@@ -11,12 +11,13 @@ import net.kodein.cup.speaker.speakerWindow
 import net.kodein.cup.widgets.material.cupScaleDown
 import org.kodein.emoji.compose.EmojiService
 import slides.intro
+import slides.title
 import slides.todo
 
 
 fun main() = cupApplication(
     // TODO: Change title
-    title = "My Amazing Presentation!"
+    title = "iOSDC 2024 Slides"
 ) {
     remember {
         // https://github.com/kosi-libs/Emoji.kt?tab=readme-ov-file#initializing-the-emoji-service
@@ -48,6 +49,7 @@ fun main() = cupApplication(
 
 // TODO: Write your own slides!
 val presentationSlides = Slides(
+    title,
     intro,
     todo
 )

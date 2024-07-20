@@ -8,8 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import cup_presentation_template.generated.resources.Res
-import cup_presentation_template.generated.resources.cup
+import iosdc2024_slides.generated.resources.Res
+import iosdc2024_slides.generated.resources.cup
 import net.kodein.cup.Slide
 import net.kodein.cup.ui.styled
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -32,5 +32,6 @@ val intro by Slide {
         text = "Hello, friend!",
         style = MaterialTheme.typography.h1
     )
+
     TextWithPlatformEmoji(styled { "Welcome to ${+b}Compose ur Pres${-b}! ${Emoji.Wink}" })
 }
