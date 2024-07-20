@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            slides
+            iosdc2024-slides
       - name: Configure Pages
         uses: actions/configure-pages@v3
       - name: Set up JDK Temurin 17
